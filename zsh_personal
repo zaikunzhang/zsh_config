@@ -42,7 +42,8 @@ bindkey "^[[B" down-line-or-beginning-search  # Down arrow
 
 # Enhanced command logging.
 zsh_command_logger() {
-    local log_dir="$LOG"
+    local log_dir="$LOG"/zsh
+    mkdir -p "$log_dir"
     local today=$(date +%Y%m%d)
     local log_file="$log_dir/zsh-${today}.log"
     local timestamp=$(date +%Y%m%d.%H%M%S)
