@@ -117,6 +117,24 @@ if [[ $SSH_SESSION == 1 ]]; then
 fi
 
 
+# NAG Fortran compiler
+# N.B.:
+# 0. On macOS, we may need to allow nagfor and related binaries to run in
+# System Settings > Security & Privacy > Security settings.
+# Without this, `nagfor` in terminal may hang without any output, while a warning is shown on the GUI
+# of the machine about blocked software. This is impossible to debug if we work remotely without GUI
+# access to the machine.
+# 1. Configure the NAG_SERVER_NAME in nag_licensing file to be the hostname of license server.
+#
+# shellcheck source=/home/zaikunzhang/local/bin/nag_licensing
+if [[ -f "$LOCAL/bin/nag_licensing" ]] ; then
+    NAG_LOG="$LOG/nag/"
+    LOG_FILE="nag_licensing_$(date "+%Y%m%d.%H%M%S").log"
+    mkdir -p "$NAG_LOG"
+    source "$LOCAL/bin/nag_licensing" > "$NAG_LOG"/"$LOG_FILE" 2>&1  # must use "source"; executing is not sufficient.
+fi
+
+
 # Load NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
